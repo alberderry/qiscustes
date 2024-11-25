@@ -58,7 +58,6 @@
     .chat-footer button {
       padding: 10px;
     }
-    /* Added styles for links */
     a {
       color: #007bff;
     }
@@ -109,7 +108,7 @@
 
   function displayMessages() {
     const chatBody = document.getElementById("chat-body");
-    chatBody.innerHTML = ""; // Clear previous messages
+    chatBody.innerHTML = ""; 
 
     chatRoom.comments.forEach(comment => {
       const messageDiv = document.createElement("div");
@@ -126,7 +125,6 @@
         }
       }
 
-      // Handle different message types
       if (comment.type === "text") {
         messageDiv.innerText = comment.message;
       } else if (comment.type === "image") {
@@ -164,7 +162,7 @@
       };
       chatRoom.comments.push(newMessage);
       displayMessages();
-      messageInput.value = ""; // Clear input after sending
+      messageInput.value = ""; 
     }
   });
 
