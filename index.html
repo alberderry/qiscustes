@@ -68,7 +68,6 @@
     <h5 id="chat-room-name"></h5>
   </div>
   <div class="chat-body" id="chat-body">
-    <!-- Messages will be displayed here -->
   </div>
   <div class="chat-footer">
     <input type="text" id="message-input" placeholder="Type a message...">
@@ -87,28 +86,28 @@
       { id: "customer@mail.com", name: "king customer", role: 2 }
     ],
     comments: [
-      { id: 885512, type: "text", message: "Selamat malam", sender: "customer@mail.com" },
+      { id: 885512, type: "text", message: "Selamadt malam", sender: "customer@mail.com" },
       { id: 885513, type: "text", message: "Malam", sender: "agent@mail.com" },
       { id: 885514, type: "text", message: "Ada yang bisa saya bantu?", sender: "agent@mail.com" },
       { id: 885515, type: "text", message: "Saya ingin mengirimkan bukti pembayaran, karena diaplikasi selalu gagal", sender: "customer@mail.com" },
-      { id: 885516, type: "text", message: "Baik, silahkan kirimkan lampiran bukti pembayarannya", sender: "agent@mail.com" }
+      { id: 885516, type: "text", message: "Baikk, silahkan kirimkan lampiran bukti pembayarannya", sender: "agent@mail.com" },
+      { id: 885517, type: "image", message: "Ini bukti pembayarannya.", sender: "customer@mail.com", media_url: "https://example.com/payment-proof.jpg" },
+      { id: 885518, type: "video", message: "Silakan lihat video tutorial ini.", sender: "agent@mail.com", media_url: "https://example.com/tutorial-video.mp4" },
+      { id: 885519, type: "pdf", message: "Saya sudah mengirimkan laporan dalam format PDF.", sender: "agent@mail.com", media_url: "https://example.com/report.pdf" }
     ]
   };
 
-  // Display room name and image
   document.getElementById("chat-room-name").innerText = chatRoom.name;
   document.getElementById("chat-room-image").src = chatRoom.imageUrl;
 
-  // Function to display messages
   function displayMessages() {
     const chatBody = document.getElementById("chat-body");
-    chatBody.innerHTML = ""; // Clear previous messages
+    chatBody.innerHTML = ""; 
 
     chatRoom.comments.forEach(comment => {
       const messageDiv = document.createElement("div");
       messageDiv.classList.add("message");
 
-      // Determine the sender role and add the respective class
       const sender = chatRoom.participants.find(participant => participant.id === comment.sender);
       if (sender) {
         if (sender.role === 0) {
@@ -120,12 +119,33 @@
         }
       }
 
-      messageDiv.innerText = comment.message;
+      // Handle different message types
+      if (comment.type === "text") {
+        messageDiv.innerText = comment.message;
+      } else if (comment.type === "image") {
+        const img = document.createElement("img");
+        img.src = comment.media_url;
+        img.alt = "Image Message";
+        img.style.maxWidth = "100%";
+        messageDiv.appendChild(img);
+      } else if (comment.type === "video") {
+        const video = document.createElement("video");
+        video.src = comment.media_url;
+        video.controls = true;
+        video.style.maxWidth = "100%";
+        messageDiv.appendChild(video);
+      } else if (comment.type === "pdf") {
+        const link = document.createElement("a");
+        link.href = comment.media_url;
+        link.target = "_blank";
+        link.innerText = "Download PDF";
+        messageDiv.appendChild(link);
+      }
+
       chatBody.appendChild(messageDiv);
     });
   }
 
-  // Send new message
   document.getElementById("send-button").addEventListener("click", () => {
     const messageInput = document.getElementById("message-input");
     if (messageInput.value.trim() !== "") {
@@ -133,15 +153,14 @@
         id: Date.now(),
         type: "text",
         message: messageInput.value.trim(),
-        sender: "customer@mail.com" // Assuming the customer is sending the message
+        sender: "customer@mail.com" 
       };
       chatRoom.comments.push(newMessage);
       displayMessages();
-      messageInput.value = ""; // Clear input after sending
+      messageInput.value = ""; 
     }
   });
 
-  // Initialize chat interface
   displayMessages();
 </script>
 
